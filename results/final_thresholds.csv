@@ -1,0 +1,7 @@
+threshold_type,stratum,development_threshold,temporal_sensitivity,temporal_specificity
+Global,All adults,0.131182,0.8118,0.6202
+Age-stratified,18-39 years,0.051183,0.7500,0.3704
+Age-stratified,40-59 years,0.098900,0.6884,0.6377
+Age-stratified,60+ years,0.274782,0.7804,0.5845
+Diabetes-stratified,No diagnosed diabetes,0.084934,0.7888,0.5653
+Diabetes-stratified,Diagnosed diabetes,0.327836,0.7926,0.4189
