@@ -1,0 +1,41 @@
+FINAL RESULT UPDATES APPLIED
+
+Source of truth: executed CKD_MLWA_Research_v5_WTPH2YR_REVISED notebook.
+
+Survey weighting
+- Development (2017-2018): WTMEC2YR
+- Temporal (Aug 2021-Aug 2023): WTPH2YR
+
+Updated temporal weighted prevalence
+- 0.1406 (14.06%)
+
+Updated survey-weighted temporal performance
+- ROC-AUC: 0.7938
+- PR-AUC: 0.4378
+- Brier: 0.0989
+- Log loss: 0.3309
+- Accuracy: 0.7201
+- Precision: 0.3019
+- Sensitivity: 0.7549
+- Specificity: 0.7144
+- F1: 0.4313
+- ECE: 0.0128
+
+Unchanged main temporal results
+- ROC-AUC: 0.7892 (95% CI 0.7739-0.8049)
+- PR-AUC: 0.4648 (95% CI 0.4340-0.4959)
+- Brier: 0.1160 (95% CI 0.1110-0.1211)
+- Log loss: 0.3758 (95% CI 0.3619-0.3901)
+- Sensitivity: 0.8118
+- Specificity: 0.6202
+
+Editorial/methodological revisions
+- Stratified threshold analyses explicitly labeled exploratory.
+- Decision-curve wording changed from 'clinically relevant range' to 'evaluated range'.
+- Feature-set and imbalance sensitivity tables labeled as within-analysis comparisons.
+- Outcome-component table resized to fit the column.
+- eGFR equation broken across two lines for clean two-column layout.
+- Internal author-note appendix removed.
+- Redundant Consent to participate section removed.
+- AI declaration polished.
+- Four manuscript figures prepared as publication-quality EPS files.
