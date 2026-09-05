@@ -1,0 +1,31 @@
+name: Update CKD notebook paths
+
+on:
+  push:
+    paths:
+      - 'scripts/update_ckd_notebook.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-notebook:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Update CKD_MLWA_Research.ipynb
+        run: python scripts/update_ckd_notebook.py
+      - name: Commit notebook update
+        run: |
+          if git diff --quiet -- CKD_MLWA_Research.ipynb; then
+            echo "No notebook changes needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CKD_MLWA_Research.ipynb
+          git commit -m "Update CKD notebook for GitHub-hosted reproducibility"
+          git push
