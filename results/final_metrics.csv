@@ -1,0 +1,3 @@
+analysis,roc_auc,pr_auc,brier,log_loss,accuracy,precision,sensitivity,specificity,f1,calibration_intercept,calibration_slope,ece
+2017-2018 development OOF,0.7890,0.4650,0.1223,0.3918,0.6774,0.3404,0.8000,0.6497,0.4776,0.0210,1.0198,0.0129
+2021-2023 temporal,0.7892,0.4648,0.1160,0.3758,0.6530,0.3061,0.8118,0.6202,0.4446,0.0238,1.0756,0.0128
