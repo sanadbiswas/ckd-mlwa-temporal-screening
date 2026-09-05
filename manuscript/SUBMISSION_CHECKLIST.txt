@@ -1,0 +1,20 @@
+MLWA SUBMISSION CHECKLIST
+=========================
+
+Final submission package contains:
+- main manuscript source/PDF
+- supplementary material source/PDF
+- publication-quality EPS figures
+- references.bib
+- final analysis notebook
+- revised result summaries
+
+Repository:
+https://github.com/sanadbiswas/ckd-mlwa-temporal-screening
+
+Before clicking Submit:
+- confirm author order, affiliations, and emails;
+- confirm CRediT roles with all authors;
+- retain the AI-use declaration;
+- upload supplementary material in the format requested by the journal system;
+- use the final WTPH2YR-weighted temporal values reported under results/.
