@@ -59,13 +59,12 @@ for cell in nb.get("cells", []):
     if cell.get("cell_type") != "code":
         continue
     src = "".join(cell.get("source", []))
-    if "drive.mount" in src or "Shuvo-Paper" in src or "nhanes_ckd_risk_clean.csv" in src:
+    if "drive.mount" in src or "Shuvo-Paper" in src or "nhanes_ckd_risk_clean.csv" in src or "DATA_URL" in src:
         cell["source"] = setup_source
         setup_done = True
         break
 
 if not setup_done:
-    # Insert immediately after title if an old setup cell was not found.
     nb["cells"].insert(1, {
         "cell_type": "code",
         "execution_count": None,
@@ -80,13 +79,15 @@ if not setup_done:
 for cell in nb.get("cells", []):
     src = "".join(cell.get("source", []))
 
-    # Remove any remaining Drive-specific code/source references.
     src = src.replace('from google.colab import drive\n', '')
     src = src.replace('drive.mount("/content/drive")\n', '')
     src = src.replace("drive.mount('/content/drive')\n", '')
     src = src.replace('/content/drive/MyDrive/Shuvo-Paper', '/content')
     src = src.replace('nhanes_ckd_risk_clean.csv', 'nhanes_ckd_risk_data.csv')
-    src = src.replace('mlwa_research_grade_results', 'mlwa_research_grade_results_v5')
+    # Normalize only legacy result-directory names, avoiding repeated _v5 suffixes.
+    src = src.replace("mlwa_research_grade_results_v5_v5", "mlwa_research_grade_results_v5")
+    src = src.replace("ROOT / 'mlwa_research_grade_results'", "ROOT / 'mlwa_research_grade_results_v5'")
+    src = src.replace('ROOT / "mlwa_research_grade_results"', 'ROOT / "mlwa_research_grade_results_v5"')
 
     # Avoid nested CPU parallelism: RandomizedSearchCV owns parallelization.
     src = src.replace('RandomForestClassifier(random_state=RANDOM_STATE, n_jobs=-1)',
@@ -96,8 +97,7 @@ for cell in nb.get("cells", []):
     src = src.replace('LGBMClassifier(\n                objective="binary",\n                random_state=RANDOM_STATE,\n                n_jobs=-1,',
                       'LGBMClassifier(\n                objective="binary",\n                random_state=RANDOM_STATE,\n                n_jobs=1,')
 
-    # Temporal survey weighting: retain WTMEC2YR for development but use WTPH2YR
-    # in the 2021–2023 cohort because the phenotype depends on serum creatinine.
+    # Temporal survey weighting: WTPH2YR for 2021–2023.
     if 'BIOPRO_L.XPT' in src:
         src = src.replace(
             'select_or_nan(read_l("BIOPRO_L.XPT"), ["LBXSCR"], "BIOPRO_L")',
@@ -114,7 +114,6 @@ for cell in nb.get("cells", []):
             '    {"cohort": "2021-2023 temporal", "survey_weight": "WTPH2YR", **weighted_ext_metrics}'
         )
 
-    # Update explanatory text where it occurs in markdown/code strings.
     src = src.replace(
         'Because the study uses MEC examination/laboratory variables, `WTMEC2YR` is used\nfor population-weighted sensitivity analyses.',
         'For the 2017–2018 development cohort, `WTMEC2YR` is used for the secondary population-weighted evaluation. For August 2021–August 2023, `WTPH2YR` is used because the phenotype includes serum creatinine.'
@@ -124,7 +123,7 @@ for cell in nb.get("cells", []):
         cell["source"] = src.splitlines(keepends=True)
 
 # -----------------------------------------------------------------------------
-# 4. Remove stale execution outputs, including old Drive path output text
+# 4. Remove stale outputs / execution metadata
 # -----------------------------------------------------------------------------
 for cell in nb.get("cells", []):
     if cell.get("cell_type") == "code":
@@ -138,7 +137,7 @@ for cell in nb.get("cells", []):
         cell["metadata"] = md
 
 # -----------------------------------------------------------------------------
-# 5. Final metadata and safety checks
+# 5. Final metadata and checks
 # -----------------------------------------------------------------------------
 nb.setdefault("metadata", {})["revision_note"] = (
     "Final v5 GitHub-first reproducibility notebook: no Google Drive path, "
@@ -147,7 +146,12 @@ nb.setdefault("metadata", {})["revision_note"] = (
 )
 
 serialized = json.dumps(nb, ensure_ascii=False, indent=1)
-for forbidden in ["/content/drive/MyDrive/Shuvo-Paper", "drive.mount(", "nhanes_ckd_risk_clean.csv"]:
+for forbidden in [
+    "/content/drive/MyDrive/Shuvo-Paper",
+    "drive.mount(",
+    "nhanes_ckd_risk_clean.csv",
+    "mlwa_research_grade_results_v5_v5",
+]:
     if forbidden in serialized:
         raise RuntimeError(f"Forbidden stale reference remains: {forbidden}")
 
