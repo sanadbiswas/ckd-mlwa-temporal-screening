@@ -115,8 +115,9 @@ A finalized citation and DOI will be added after publication.
 
 ## Corresponding author
 
-Sanad Biswas  
+**Sanad Biswas**  
+Assistant Professor of Data Science  
 Department of Mathematics and Statistics  
 Sam Houston State University  
 Huntsville, Texas, USA  
-Email: sxb218@shsu.edu
+**Email:** [sxb218@shsu.edu](mailto:sxb218@shsu.edu); [biswas.sanad@gmail.com](mailto:biswas.sanad@gmail.com)
