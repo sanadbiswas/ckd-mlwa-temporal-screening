@@ -24,7 +24,6 @@ Participants with missing serum creatinine or urinary ACR are excluded before ou
 ├── ckd-runner.ipynb
 ├── pipeline_runner.py
 ├── requirements.txt
-├── nhanes_ckd_risk_clean.csv.gz
 ├── modules/
 │   ├── 00_setup.py
 │   ├── 01_data_preparation.py
@@ -33,9 +32,11 @@ Participants with missing serum creatinine or urinary ACR are excluded before ou
 └── mlwa_results/
 ```
 
-`nhanes_ckd_risk_clean.csv.gz` contains the cleaned 2017–2018 development dataset used by the current analysis. Pandas reads the compressed file directly. The dataset can also be rebuilt from the public CDC/NCHS NHANES XPT files with `modules/01_data_preparation.py`.
+## Data preparation
 
-The temporal cohort is reconstructed directly from the public NHANES 2021–2023 files during the analysis.
+The cleaned development dataset is generated locally and is not stored in this repository. `modules/01_data_preparation.py` downloads the required public NHANES 2017–2018 XPT files directly from CDC/NCHS, applies the study inclusion criteria, constructs the CKD-compatible screening phenotype, removes outcome-defining laboratory variables, and writes `nhanes_ckd_risk_clean.csv` for downstream analysis.
+
+The temporal cohort is reconstructed directly from the public NHANES August 2021–August 2023 files during the analysis.
 
 ## Reproducing the analysis
 
@@ -45,9 +46,9 @@ Install the required packages:
 pip install -r requirements.txt
 ```
 
-Run `ckd-runner.ipynb` from top to bottom, or use `pipeline_runner.py` to execute individual stages. Generated tables and figures are written to `mlwa_results/`.
+Run `ckd-runner.ipynb` from top to bottom. The runner first creates the cleaned development dataset from the public NHANES source files and then executes the modeling, temporal validation, subgroup analyses, sensitivity analyses, and reproducibility outputs.
 
-To rebuild the cleaned development dataset from the original NHANES files, run `modules/01_data_preparation.py` before the downstream analysis stages.
+Generated tables and figures are written to `mlwa_results/`.
 
 ## Reproducibility safeguards
 
