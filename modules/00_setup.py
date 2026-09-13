@@ -2,7 +2,7 @@
 from pathlib import Path
 
 ROOT = Path(globals().get("PROJECT_ROOT", Path.cwd())).resolve()
-RESULTS_DIR = ROOT / "mlwa_results"
+RESULTS_DIR = ROOT / "ckd_results"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Cleaned development dataset used by the analysis.
