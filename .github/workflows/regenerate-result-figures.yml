@@ -1,0 +1,88 @@
+name: Regenerate current result figures
+
+on:
+  push:
+    paths:
+      - '.github/workflows/regenerate-result-figures.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run current CKD pipeline
+        env:
+          MPLBACKEND: Agg
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from pipeline_runner import CKDPipelineRunner
+
+          root = Path.cwd().resolve()
+          r = CKDPipelineRunner(root)
+          r.prepare_data()
+          r.setup()
+          r.load_development_data()
+          r.build_preprocessor()
+          r.define_candidate_models()
+          r.define_metrics()
+          r.run_nested_cv()
+          r.run_bootstrap_uncertainty()
+          r.run_paired_model_comparison()
+          r.tune_final_model()
+          r.calibrate_model()
+          r.freeze_threshold()
+          r.fit_final_model()
+          r.build_temporal_cohort()
+          r.run_temporal_validation()
+          r.run_temporal_calibration()
+          r.run_decision_curve()
+          r.run_age_sensitivity()
+          r.run_outcome_component_sensitivity()
+          r.run_feature_set_sensitivity()
+          r.run_subgroup_analysis()
+          r.run_stratified_thresholds()
+          r.run_imbalance_sensitivity()
+          r.run_survey_weighted_evaluation()
+          r.run_permutation_importance()
+          r.finalize_outputs()
+          PY
+
+      - name: Keep exact result formats and remove bad previews
+        run: |
+          rm -f mlwa_results/*.jpg
+          rm -rf .figure_upload .png_upload_exact
+          test -s mlwa_results/internal_calibration_oof.png
+          test -s mlwa_results/calibration_transport.png
+          test -s mlwa_results/decision_curve_temporal.png
+          test -s mlwa_results/temporal_permutation_importance.png
+          test -s mlwa_results/internal_calibration_oof.eps
+          test -s mlwa_results/calibration_transport.eps
+          test -s mlwa_results/decision_curve_temporal.eps
+          test -s mlwa_results/temporal_permutation_importance.eps
+
+      - name: Commit regenerated outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A mlwa_results .figure_upload .png_upload_exact 2>/dev/null || true
+          git add -u
+          if ! git diff --cached --quiet; then
+            git commit -m "Regenerate exact PNG and EPS result figures"
+            git push
+          fi
