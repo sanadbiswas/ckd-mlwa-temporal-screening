@@ -32,11 +32,7 @@ Participants with missing serum creatinine or urinary ACR are excluded before ou
 └── mlwa_results/
 ```
 
-## Data preparation
-
-The cleaned development dataset is generated locally and is not stored in this repository. `modules/01_data_preparation.py` downloads the required public NHANES 2017–2018 XPT files directly from CDC/NCHS, applies the study inclusion criteria, constructs the CKD-compatible screening phenotype, removes outcome-defining laboratory variables, and writes `nhanes_ckd_risk_clean.csv` for downstream analysis.
-
-The temporal cohort is reconstructed directly from the public NHANES August 2021–August 2023 files during the analysis.
+The cleaned 2017–2018 development dataset is rebuilt directly from the public CDC/NCHS NHANES XPT files by `modules/01_data_preparation.py`. The temporal cohort is reconstructed independently from the public NHANES 2021–2023 files during the analysis.
 
 ## Reproducing the analysis
 
@@ -46,9 +42,7 @@ Install the required packages:
 pip install -r requirements.txt
 ```
 
-Run `ckd-runner.ipynb` from top to bottom. The runner first creates the cleaned development dataset from the public NHANES source files and then executes the modeling, temporal validation, subgroup analyses, sensitivity analyses, and reproducibility outputs.
-
-Generated tables and figures are written to `mlwa_results/`.
+Run `ckd-runner.ipynb` from top to bottom. The runner rebuilds the development dataset, executes all modular analysis stages in sequence, and writes generated tables and figures to `mlwa_results/`.
 
 ## Reproducibility safeguards
 
@@ -58,7 +52,14 @@ The final screening threshold is derived from development out-of-fold prediction
 
 ## Results
 
-The `mlwa_results/` directory contains the principal result tables corresponding to the manuscript. Running the full pipeline regenerates the complete set of tables and figures.
+The `mlwa_results/` directory contains the manuscript-aligned performance tables, calibration summaries, subgroup analyses, sensitivity analyses, survey-weighted results, decision-curve outputs, permutation importance, reproducibility metadata, and figures.
+
+The main manuscript figures are generated in publication-quality PNG and EPS formats, with SVG copies for browser viewing. Lightweight JPG previews are also included in `mlwa_results/` so the figures can be viewed directly on GitHub:
+
+- `internal_calibration_oof`
+- `calibration_transport`
+- `decision_curve_temporal`
+- `temporal_permutation_importance`
 
 ## Data source
 
