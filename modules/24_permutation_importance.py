@@ -75,4 +75,5 @@ ax.set_xlim(
 plt.tight_layout()
 plt.savefig(RESULTS_DIR / "temporal_permutation_importance.png", dpi=600, bbox_inches="tight")
 plt.savefig(RESULTS_DIR / "temporal_permutation_importance.eps", format="eps", bbox_inches="tight")
+plt.savefig(RESULTS_DIR / "temporal_permutation_importance.svg", format="svg", bbox_inches="tight")
 plt.show()
