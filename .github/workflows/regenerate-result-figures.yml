@@ -48,8 +48,6 @@ jobs:
           root = Path.cwd().resolve()
           r = CKDPipelineRunner(root)
 
-          # Rebuild the public-data development cohort and initialize the
-          # exact preprocessing/model definitions used by the manuscript.
           r.prepare_data()
           r.setup()
           r.load_development_data()
@@ -72,8 +70,6 @@ jobs:
           ).set_params(**exact_params)
           ns['final_raw_model'].fit(ns['X_dev'], ns['y_dev'])
 
-          # Reproduce development calibration, frozen threshold, final model,
-          # independent temporal cohort, and the four manuscript figures.
           r.calibrate_model()
           r.freeze_threshold()
           r.fit_final_model()
@@ -87,23 +83,23 @@ jobs:
       - name: Keep native result formats only
         run: |
           set -euo pipefail
-          rm -f mlwa_results/*.jpg
+          rm -f ckd_results/*.jpg
           rm -rf .figure_upload .png_upload_exact
 
-          test -s mlwa_results/internal_calibration_oof.png
-          test -s mlwa_results/calibration_transport.png
-          test -s mlwa_results/decision_curve_temporal.png
-          test -s mlwa_results/temporal_permutation_importance.png
-          test -s mlwa_results/internal_calibration_oof.eps
-          test -s mlwa_results/calibration_transport.eps
-          test -s mlwa_results/decision_curve_temporal.eps
-          test -s mlwa_results/temporal_permutation_importance.eps
+          test -s ckd_results/internal_calibration_oof.png
+          test -s ckd_results/calibration_transport.png
+          test -s ckd_results/decision_curve_temporal.png
+          test -s ckd_results/temporal_permutation_importance.png
+          test -s ckd_results/internal_calibration_oof.eps
+          test -s ckd_results/calibration_transport.eps
+          test -s ckd_results/decision_curve_temporal.eps
+          test -s ckd_results/temporal_permutation_importance.eps
 
       - name: Commit native PNG and EPS figures
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A mlwa_results .figure_upload .png_upload_exact 2>/dev/null || true
+          git add -A ckd_results .figure_upload .png_upload_exact 2>/dev/null || true
           git add -u
           if ! git diff --cached --quiet; then
             git commit -m "Restore native PNG and EPS manuscript figures"
