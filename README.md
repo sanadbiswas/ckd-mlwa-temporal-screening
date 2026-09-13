@@ -29,7 +29,7 @@ Participants with missing serum creatinine or urinary ACR are excluded before ou
 │   ├── 01_data_preparation.py
 │   ├── ...
 │   └── 25_reproducibility_and_master_table.py
-└── mlwa_results/
+└── ckd_results/
 ```
 
 The cleaned 2017–2018 development dataset is rebuilt directly from the public CDC/NCHS NHANES XPT files by `modules/01_data_preparation.py`. The temporal cohort is reconstructed independently from the public NHANES 2021–2023 files during the analysis.
@@ -42,7 +42,7 @@ Install the required packages:
 pip install -r requirements.txt
 ```
 
-Run `ckd-runner.ipynb` from top to bottom. The runner rebuilds the development dataset, executes all modular analysis stages in sequence, and writes generated tables and figures to `mlwa_results/`.
+Run `ckd-runner.ipynb` from top to bottom. The runner rebuilds the development dataset, executes all modular analysis stages in sequence, and writes generated tables and figures to `ckd_results/`.
 
 ## Reproducibility safeguards
 
@@ -52,9 +52,9 @@ The final screening threshold is derived from development out-of-fold prediction
 
 ## Results
 
-The `mlwa_results/` directory contains the manuscript-aligned performance tables, calibration summaries, subgroup analyses, sensitivity analyses, survey-weighted results, decision-curve outputs, permutation importance, reproducibility metadata, and figures.
+The `ckd_results/` directory contains the manuscript-aligned performance tables, calibration summaries, subgroup analyses, sensitivity analyses, survey-weighted results, decision-curve outputs, permutation importance, reproducibility metadata, and figures.
 
-The main manuscript figures are generated in publication-quality PNG and EPS formats, with SVG copies for browser viewing. Lightweight JPG previews are also included in `mlwa_results/` so the figures can be viewed directly on GitHub:
+The main manuscript figures are stored in the native formats produced by the analysis code, including PNG and EPS files.
 
 - `internal_calibration_oof`
 - `calibration_transport`
