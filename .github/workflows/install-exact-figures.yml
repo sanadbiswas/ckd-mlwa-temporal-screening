@@ -20,16 +20,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p mlwa_results
+          mkdir -p ckd_results
           for stem in calibration_transport decision_curve_temporal internal_calibration_oof temporal_permutation_importance; do
-            cat .png_upload_exact/${stem}.png.b64.* | base64 --decode > mlwa_results/${stem}.png
-            cat .png_upload_exact/${stem}.eps.b64.* | base64 --decode > mlwa_results/${stem}.eps
+            cat .png_upload_exact/${stem}.png.b64.* | base64 --decode > ckd_results/${stem}.png
+            cat .png_upload_exact/${stem}.eps.b64.* | base64 --decode > ckd_results/${stem}.eps
           done
 
-          rm -f mlwa_results/calibration_transport.jpg \
-                mlwa_results/decision_curve_temporal.jpg \
-                mlwa_results/internal_calibration_oof.jpg \
-                mlwa_results/temporal_permutation_importance.jpg
+          rm -f ckd_results/calibration_transport.jpg \
+                ckd_results/decision_curve_temporal.jpg \
+                ckd_results/internal_calibration_oof.jpg \
+                ckd_results/temporal_permutation_importance.jpg
 
           rm -rf .png_upload_exact
 
@@ -38,8 +38,8 @@ jobs:
         run: |
           set -euo pipefail
           for stem in calibration_transport decision_curve_temporal internal_calibration_oof temporal_permutation_importance; do
-            test -s mlwa_results/${stem}.png
-            test -s mlwa_results/${stem}.eps
+            test -s ckd_results/${stem}.png
+            test -s ckd_results/${stem}.eps
           done
 
       - name: Commit exact figures
